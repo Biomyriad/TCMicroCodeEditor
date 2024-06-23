@@ -1,61 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>MicroCode Editor</title>
-    <link rel="stylesheet" href="styles.css">
-    
-<style>
+  <meta charset="UTF-8">
+  <title>MicroCode Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js"></script>
+
+
+  <style>
     .scroll-box {
-        background: grey;
-        height: 400px;
-        width: 200px;
-        border: 3px solid #b7b7b7;
-        overflow: hidden;
-        overflow-y: auto;
+      background: grey;
+      height: 400px;
+      width: 200px;
+      border: 3px solid #b7b7b7;
+      overflow: hidden;
+      overflow-y: auto;
     }
-</style>
+  </style>
 
 </head>
+
 <body>
-    <script>
-        function fun1() {
-            x = document.querySelector(".scroll-box")
-            console.log(x)
-            x.appendChild(addRow())
-        }
-        
-        function addRow() {
-            ele = document.createElement("div")
-            tx1 = document.createElement("span")
-            tx2 = document.createElement("span")
-            tx2 = document
-            
-            tx1.innerText = "F0"
-            tx2.innerText = "sub A, [HL] + u16"
-            ele.appendChild(tx1)
-            ele.appendChild(tx2)
-            
-            return ele
-        }
-    </script>    
-    
-    
-    
-    <div class="scroll-box">
-        <div>
-            <span><a href="">FC - add a,U8</a></span>
-        </div>
-        <div>
-            <span>FC - add a,U8</span>
-        </div>
-        <div></div>
-    </div>
-    
+  <script>
+    function fun1() {
+      x = document.querySelector(".scroll-box")
+      x.appendChild(addRow())
+    }
+
+    function addRow() {
+      ele = document.createElement("div")
+      tx1 = document.createElement("span")
+      tx2 = document.createElement("span")
+
+      tx1.innerText = "F0"
+      tx2.innerText = "sub A, [HL] + u16"
+      ele.appendChild(tx1)
+      ele.appendChild(tx2)
+
+      return ele
+    }
+  </script>
+
+  <div class="scroll-box">
     <div>
-        <button onclick="fun1()">fun1</button>
+      <span><a href="">FC - add a,U8</a></span>
     </div>
-    
+    <div>
+      <span>FC - add a,U8</span>
+    </div>
+  </div>
+
+  <div>
+    <button onclick="fun1()">fun1</button>
+  </div>
 
 </body>
+
 </html>
