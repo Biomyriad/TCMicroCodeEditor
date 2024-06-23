@@ -7,16 +7,14 @@
 const opCodeList = []
 const ctrlLineLut = []
 
-ctrlLineLut[0] = 'ip_to_addy'
-
-const opCodeEntry = (code,mnemonic) => {
+function opCodeEntry(code,mnemonic) {
   this.code = code
   this.mnemonic = mnemonic
   this.mCycles = [] // 1 item per state
 }
 
 const myOp = new opCodeEntry('00', 'nop')
-mythis.mCycles.push(
+myOp.mCycles.push(
     // array of bits or ctrl lines
     [653,43,1967,44,1,55] // needs to be as long as # ctrl lines
   )
