@@ -11,7 +11,7 @@
     .scroll-box {
       background: grey;
       height: 400px;
-      width: 200px;
+      /* width: 240px; */
       margin-bottom: 5px;
       padding: 2px;
       border: 3px solid #b7b7b7;
@@ -21,49 +21,61 @@
   </style>
 
 </head>
-<body>
-  <div class="scroll-box">
-    <div>
-      <span><a href="">FC - add a,U8</a></span>
+<body onload="initApp()">
+  
+  <div style="width: 249px;">   <!-- OP Code List -->
+    <div class="scroll-box" id="opcode-listbox"></div>
+    <div style="margin-bottom: 5px;">
+      <input type="text" id="new-op-code" style="width: 47px;" autocomplete="off">
+      <input type="text" id="new-op-mnem" style="width: 125PX;" autocomplete="off">
+      <input type="text" id="update-op-code" style="width: 47px;" autocomplete="off">
     </div>
-    <div>
-      <span>FC - add a,U8</span>
-    </div>
+    <div style="display: flex; justify-content: center; gap: 5px">
+      <button onclick="saveOpCode()" style="width: 57px;">Save</button>
+      <button onclick="deleteOpCode()" style="width: 57px;">Delete</button>
+    </div>    
   </div>
 
-  <div>
-    <input type="text" id="new-op-code">
-    <input type="text" id="new-op-mnem">
-    <button onclick="fun1()">fun1</button>
+  <div style="margin-top: 10px;">
+    <button onclick="TEST()" style="width: 57px;">TEST</button>
+    <button onclick="TEST2()" style="width: 57px;">TEST2</button>
   </div>
-
 
   <script>
+    //OpCode List
+    var opCodeListBox = document.getElementById('opcode-listbox')
     var newOpCodeTbx = document.getElementById('new-op-code')
     var newOpMnemTbx = document.getElementById('new-op-mnem')
+    var updateOpCodeTbx = document.getElementById('update-op-code')
   
-    function fun1() {
-      x = document.querySelector(".scroll-box")
-      x.appendChild(addOpCodeSB(
-          newOpCodeTbx.value,
-          newOpMnemTbx.value
-        ))
-      
-      opCodeList.push(new opCodeEntry(
-          newOpCodeTbx.value,
-          newOpMnemTbx.value
-        ))
-        
+    function deleteOpCode() {
+      if(newOpCodeTbx.value == "") return
+      removeOpCode(newOpCodeTbx.value)
+      opCodeListBoxRefresh()
       newOpCodeTbx.value = ''
-      newOpMnemTbx.value = ''
     }
 
-    function addOpCodeSB(opCode, opMnem) {
+    function saveOpCode() {
+      if(newOpCodeTbx.value == "" || newOpMnemTbx.value == "") return
+      addUpdateOpCode(
+        newOpCodeTbx.value,
+        newOpMnemTbx.value,
+        updateOpCodeTbx.value == "" ? updateOpCodeTbx.value : false
+      )
+      opCodeListBoxRefresh()
+      newOpCodeTbx.value = ''
+      newOpMnemTbx.value = ''
+      updateOpCodeTbx.value = ''
+    }
+
+    function createOpCodeListEle(opCode, opMnem) {
       let ele = document.createElement("div")
       let tx1 = document.createElement("span")
       let tx2 = document.createElement("span")
       let tx3 = document.createElement("span")
 
+      ele.addEventListener("click", opCodeEleClickHandler);
+      ele.id = "opcodeid-" + opCode
       tx1.innerText = opCode
       tx2.innerText = ' - '
       tx3.innerText = opMnem
@@ -73,6 +85,36 @@
 
       return ele
     }
+
+    function opCodeEleClickHandler(event) {
+      alert(this.id + " --- " + event.target);
+    }
+
+    function opCodeListBoxRefresh() {
+      if(opCodeList != null){
+        opCodeListBox.replaceChildren()
+        opCodeList.forEach((item)=>{
+          opCodeListBox.appendChild(
+            createOpCodeListEle(item.code,item.mnemonic)
+          )
+        })        
+      }
+    }
+
+    // --------- ONLOAD ------------
+    function initApp() {
+      loadState()
+      opCodeListBoxRefresh()
+    }
+//-------------------
+    function TEST() {
+
+    }
+    function TEST2() {
+
+    }
+
+
   </script>
 
 </body>
