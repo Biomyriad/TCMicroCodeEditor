@@ -8,32 +8,52 @@
   <script src="main.js"></script>
 
   <style>
+    #content {
+      display: flex;
+      justify-content: left;
+      gap: 10px;
+    }
+  
     .scroll-box {
       background: grey;
-      height: 400px;
-      /* width: 240px; */
       margin-bottom: 5px;
       padding: 2px;
       border: 3px solid #b7b7b7;
       overflow: hidden;
       overflow-y: auto;
     }
+    
+    #opcode-listbox {
+      height: 400px;
+      width: 240px;
+    }
+    
+    #opcode-ctrllist {
+      height: 400px;
+      min-width: 600px;
+    }
+    
   </style>
 
 </head>
 <body onload="initApp()">
-  
-  <div style="width: 249px;">   <!-- OP Code List -->
-    <div class="scroll-box" id="opcode-listbox"></div>
-    <div style="margin-bottom: 5px;">
-      <input type="text" id="new-op-code" style="width: 47px;" autocomplete="off">
-      <input type="text" id="new-op-mnem" style="width: 125PX;" autocomplete="off">
-      <input type="text" id="update-op-code" style="width: 47px;" autocomplete="off">
+  <div id="content">
+    <div id="opcodelistbox">   <!-- OP Code List -->
+      <div class="scroll-box" id="opcode-listbox"></div>
+      <div style="margin-bottom: 5px;">
+        <input type="text" id="new-op-code" style="width: 47px;" autocomplete="off">
+        <input type="text" id="new-op-mnem" style="width: 125PX;" autocomplete="off">
+        <input type="text" id="update-op-code" style="width: 47px;" autocomplete="off">
+      </div>
+      <div style="display: flex; justify-content: center; gap: 5px">
+        <button onclick="saveOpCode()" style="width: 57px;">Save</button>
+        <button onclick="deleteOpCode()" style="width: 57px;">Delete</button>
+      </div>    
     </div>
-    <div style="display: flex; justify-content: center; gap: 5px">
-      <button onclick="saveOpCode()" style="width: 57px;">Save</button>
-      <button onclick="deleteOpCode()" style="width: 57px;">Delete</button>
-    </div>    
+    
+    <div id="opcodectrllinedisplay">
+      <div class="scroll-box" id="opcode-ctrllist"></div>
+    </div>
   </div>
 
   <div style="margin-top: 10px;">
