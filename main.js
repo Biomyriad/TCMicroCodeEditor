@@ -4,16 +4,16 @@
 //localStorage.clear()
 
 
-var opCodeList = []
-var ctrlLineLut = []
+var opCodes = {}
+opCodes.opCodeList = []
 
-
-
+var ctrlLines = {}
+ctrlLines.clList = []
 
 function saveState() {
   console.log("Data Saved")
-  localStorage.setItem("opCodeList", JSON.stringify(opCodeList))
-  localStorage.setItem("ctrlLineLut", JSON.stringify(ctrlLineLut))
+  localStorage.setItem("opCodeList", JSON.stringify(opCodes.opCodeList))
+  localStorage.setItem("ctrlLineLut", JSON.stringify(ctrlLines.clList))
 }
 
 function loadState() {
@@ -21,9 +21,13 @@ function loadState() {
   let opListHldr = localStorage.getItem("opCodeList")
   let ctrlLineHldr = localStorage.getItem("ctrlLineLut")
 
-  if(opListHldr != null) {opCodeList = JSON.parse(opListHldr)}
-  if(opListHldr != null) {ctrlLineLut = JSON.parse(ctrlLineHldr)}
+  if(opListHldr != null) {opCodes.opCodeList = JSON.parse(opListHldr)}
+  if(ctrlLineHldr != null) {ctrlLines.clList = JSON.parse(ctrlLineHldr)}
 }
+
+//-------------- Ctrl Line List Functions ---------
+
+
 
 
 //-------------- opCodeList Functions ---------
@@ -36,21 +40,21 @@ function opCodeEntry(code,mnemonic) {
 // *TODO*: ADD SORTING OPCODES MY CODE
 
 // returns modifiable instance of if found
-function opCodeListContainsCode(opCode) {
-  for(x in opCodeList) {
-    if(opCodeList[x].code == opCode) return opCodeList[x]
+opCodes.containsCode = (opCode) => {
+  for(x in opCodes.opCodeList) {
+    if(opCodes.opCodeList[x].code == opCode) return opCodes.opCodeList[x]
   }
   return false
 }
 
 //make changeCode to an opcode to update the opcodes code value
-function addUpdateOpCode(code, mnemonic, codeChange = false) {
-  let opCode = opCodeListContainsCode(code)
+opCodes.addUpdate = (code, mnemonic, codeChange = false) => {
+  let opCode = opCodes.containsCode(code)
   if(opCode) {
     if(codeChange) opCode.code = codeChange
     opCode.mnemonic = mnemonic
   } else {
-    opCodeList.push(new opCodeEntry(
+    opCodes.opCodeList.push(new opCodeEntry(
       code,
       mnemonic
     ))    
@@ -58,10 +62,10 @@ function addUpdateOpCode(code, mnemonic, codeChange = false) {
   saveState()
 }
 
-function removeOpCode(code) {
-  let opCode = opCodeListContainsCode(code)
+opCodes.remove = (code) => {
+  let opCode = opCodes.containsCode(code)
   if(opCode) {
-    const x = opCodeList.splice(opCode, 1);
+    const x = opCodes.opCodeList.splice(opCode, 1);
     console.log("Deleted OpCode: " + x)
   } else {
     return

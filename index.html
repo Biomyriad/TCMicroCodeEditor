@@ -6,6 +6,7 @@
   <title>MicroCode Editor</title>
   <link rel="stylesheet" href="styles.css">
   <script src="main.js"></script>
+  <script src="opCodeListbox.js" defer></script>
 
   <style>
     #content {
@@ -38,7 +39,7 @@
 </head>
 <body onload="initApp()">
   <div id="content">
-    <div id="opcodelistbox">   <!-- OP Code List -->
+    <div>   <!-- OP Code List -->
       <div class="scroll-box" id="opcode-listbox"></div>
       <div style="margin-bottom: 5px;">
         <input type="text" id="new-op-code" style="width: 47px;" autocomplete="off">
@@ -46,13 +47,13 @@
         <input type="text" id="update-op-code" style="width: 47px;" autocomplete="off">
       </div>
       <div style="display: flex; justify-content: center; gap: 5px">
-        <button onclick="saveOpCode()" style="width: 57px;">Save</button>
-        <button onclick="deleteOpCode()" style="width: 57px;">Delete</button>
+        <button onclick="opCodeLB.saveEntry()" style="width: 57px;">Save</button>
+        <button onclick="opCodeLB.deleteEntry()" style="width: 57px;">Delete</button>
       </div>    
     </div>
     
-    <div id="opcodectrllinedisplay">
-      <div class="scroll-box" id="opcode-ctrllist"></div>
+    <div>
+      <div class="scroll-box" id="opcode-statelist"></div>
     </div>
   </div>
 
@@ -62,69 +63,20 @@
   </div>
 
   <script>
-    //OpCode List
-    var opCodeListBox = document.getElementById('opcode-listbox')
-    var newOpCodeTbx = document.getElementById('new-op-code')
-    var newOpMnemTbx = document.getElementById('new-op-mnem')
-    var updateOpCodeTbx = document.getElementById('update-op-code')
+
+function yo() {
   
-    function deleteOpCode() {
-      if(newOpCodeTbx.value == "") return
-      removeOpCode(newOpCodeTbx.value)
-      opCodeListBoxRefresh()
-      newOpCodeTbx.value = ''
-    }
+}
 
-    function saveOpCode() {
-      if(newOpCodeTbx.value == "" || newOpMnemTbx.value == "") return
-      addUpdateOpCode(
-        newOpCodeTbx.value,
-        newOpMnemTbx.value,
-        updateOpCodeTbx.value == "" ? updateOpCodeTbx.value : false
-      )
-      opCodeListBoxRefresh()
-      newOpCodeTbx.value = ''
-      newOpMnemTbx.value = ''
-      updateOpCodeTbx.value = ''
-    }
-
-    function createOpCodeListEle(opCode, opMnem) {
-      let ele = document.createElement("div")
-      let tx1 = document.createElement("span")
-      let tx2 = document.createElement("span")
-      let tx3 = document.createElement("span")
-
-      ele.addEventListener("click", opCodeEleClickHandler);
-      ele.id = "opcodeid-" + opCode
-      tx1.innerText = opCode
-      tx2.innerText = ' - '
-      tx3.innerText = opMnem
-      ele.appendChild(tx1)
-      ele.appendChild(tx2)
-      ele.appendChild(tx3)
-
-      return ele
-    }
-
-    function opCodeEleClickHandler(event) {
-      alert(this.id + " --- " + event.target);
-    }
-
-    function opCodeListBoxRefresh() {
-      if(opCodeList != null){
-        opCodeListBox.replaceChildren()
-        opCodeList.forEach((item)=>{
-          opCodeListBox.appendChild(
-            createOpCodeListEle(item.code,item.mnemonic)
-          )
-        })        
-      }
-    }
-
+var stateListListbox = document.getElementById('opcode-statelist')
+//var newOpCodeTbx = document.getElementById('new-op-code')
+  
+  
+    
     // --------- ONLOAD ------------
     function initApp() {
       loadState()
-      opCodeListBoxRefresh()
+      opCodeLB.refresh()
     }
 //-------------------
     function TEST() {
