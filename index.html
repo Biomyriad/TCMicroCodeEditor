@@ -13,12 +13,15 @@
       display: flex;
       justify-content: left;
       gap: 10px;
+      margin-bottom: 15px;
+      
+      border: 1px solid red;
     }
   
     .scroll-box {
       background: grey;
       margin-bottom: 5px;
-      padding: 2px;
+      padding: 3px;
       border: 3px solid #b7b7b7;
       overflow: hidden;
       overflow-y: auto;
@@ -29,9 +32,54 @@
       width: 240px;
     }
     
-    #opcode-ctrllist {
+    #opcode-statelist {
       height: 400px;
       min-width: 600px;
+    }
+    
+    .mstate-container {
+      border: 3px solid #b7b7b7;
+      background: dimgrey;
+      height: 45px;
+      padding: 4px;
+    }
+    
+    .mStateCtrlLabelSpan {
+      padding-right: 4px;
+      padding-left: 4px;
+    }
+    
+    .mStateCtrlLabelSpan:nth-child(even) {
+      background-color: #e0e000
+    }
+    
+    #popup {
+      display: flex;
+      justify-content: left;
+      gap: 10px;
+      margin-bottom: 15px;
+      
+      border: 1px solid red;
+    }
+    
+    #ctrllines-controls {
+      height: 400px;
+      width: 240px;
+      
+      background: grey;
+      margin-bottom: 5px;
+      padding: 3px;
+      border: 3px solid #b7b7b7;
+    }
+    
+    #ctrllines-available {
+      height: 400px;
+      width: 240px;
+    }
+    
+    #ctrllines-selected {
+      height: 400px;
+      width: 240px;
     }
     
   </style>
@@ -56,27 +104,53 @@
       <div class="scroll-box" id="opcode-statelist"></div>
     </div>
   </div>
+  
+  <div id="popup">
+    <div class="scroll-box" id="ctrllines-available"></div>
+    <div class="" id="ctrllines-controls"></div>
+    <div class="scroll-box" id="ctrllines-selected"></div>
+  </div>
 
-  <div style="margin-top: 10px;">
+  <div style="margin-bottom: 20px;">
     <button onclick="TEST()" style="width: 57px;">TEST</button>
     <button onclick="TEST2()" style="width: 57px;">TEST2</button>
   </div>
 
   <script>
 
-function yo() {
-  
-}
-
 var stateListListbox = document.getElementById('opcode-statelist')
 //var newOpCodeTbx = document.getElementById('new-op-code')
   
+var mStateLB = {}
+
+mStateLB.createEntryEle = (arr = ["IP_ADDY","8BIT_BUS","INC_HL","INC_ADDY",'REG_A_SAVE','REG_B_OE2',"EOI"]) => {
+  let ele = document.createElement("div")
+
+  ele.addEventListener("click", mStateLB.entryClickHandler);
+  ele.id = "xxxxx"
+  ele.className ="mstate-container"
+  
+  for(i in arr) {
+    let ctrlSpan = document.createElement("span")
+    ctrlSpan.className = 'mStateCtrlLabelSpan'
+    ctrlSpan.innerText = arr[i]
+    ele.appendChild(ctrlSpan)
+  }
+
+  return ele
+}
+
+mStateLB.entryClickHandler = (event) => {
+  alert(event.currentTarget.id);
+}
   
     
     // --------- ONLOAD ------------
     function initApp() {
       loadState()
       opCodeLB.refresh()
+      
+      stateListListbox.appendChild(mStateLB.createEntryEle())
     }
 //-------------------
     function TEST() {

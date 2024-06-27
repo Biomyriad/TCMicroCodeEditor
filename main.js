@@ -8,6 +8,7 @@ var opCodes = {}
 opCodes.opCodeList = []
 
 var ctrlLines = {}
+ctrlLines.nextUID = 0
 ctrlLines.clList = []
 
 function saveState() {
@@ -26,15 +27,58 @@ function loadState() {
 }
 
 //-------------- Ctrl Line List Functions ---------
+function ctrlLineEntry(bit,name,group,overrideColor=false) {
+  this.uid = ctrlLines.nextUID++
+  this.bit = bit // 0
+  this.name = name//'IP_TO_ADDY'
+  this.group = group//'ALU'
+  this.overrideColor = overrideColor// hex color or false
+}
 
+ctrlLines.addUpdate = (bit=false,name=false,group=false,
+                       overrideColor=false,
+                       ctrlLineUID=false) => {
+  let ctrlL = ctrlLines.containsCode(ctrlLineUID)
+  if(ctrlL) {
+    if(bit) ctrlL.bit = bit
+    if(name) ctrlL.name = name
+    if(group) ctrlL.group = group
+    if(overrideColor) ctrlL.overrideColor = overrideColor
+  } else {
+    ctrlLines.clList.push(new ctrlLineEntry(
+      bit,
+      name,
+      group,
+      overrideColor
+    ))    
+  }
+  saveState()
+}
 
+ctrlLines.remove = (ctrlLineUID) => {
+  let ctrlL = ctrlLines.containsCode(ctrlLineUID)
+  if(ctrlL) {
+    const x = ctrlLines.clList.splice(ctrlL, 1);
+    console.log("Deleted ctrlLine: " + x)
+  } else {
+    return
+  }
+  saveState()
+}
 
+// returns modifiable instance of if found
+ctrlLines.containsCode = (ctrlLineUID) => {
+  for(x in ctrlLines.clList) {
+    if(ctrlLines.clList.uid == ctrlLineUID) return ctrlLines.clList[x]
+  }
+  return false
+}
 
 //-------------- opCodeList Functions ---------
 function opCodeEntry(code,mnemonic) {
   this.code = code
   this.mnemonic = mnemonic
-  this.mCycles = [] // 1 item per state
+  this.mCycles = [[1,2,3,4,5,6,7,8,9,0,10,11],[4,1,2]] // 1 item per state
 }
 
 // *TODO*: ADD SORTING OPCODES MY CODE

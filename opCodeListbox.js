@@ -31,7 +31,7 @@ opCodeLB.createEntryEle = (opCode, opMnem) => {
   let tx2 = document.createElement("span")
   let tx3 = document.createElement("span")
 
-  ele.addEventListener("click", opCodeLB.entryClickHandler);
+  ele.addEventListener("click", entryClickHandler);
   ele.id = "opcodeid-" + opCode
   tx1.innerText = opCode
   tx2.innerText = ' - '
@@ -43,7 +43,7 @@ opCodeLB.createEntryEle = (opCode, opMnem) => {
   return ele
 }
 
-opCodeLB.entryClickHandler = (event) => {
+function entryClickHandler(event) {
   alert(this.id + " --- " + event.target);
 }
 
