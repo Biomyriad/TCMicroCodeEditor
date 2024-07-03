@@ -1,13 +1,15 @@
-var opCodeListbox = document.getElementById('opcode-listbox')
+var opCodeLB = {}
+opCodeLB.listbox = document.getElementById('opcode-listbox')
+
 var newOpCodeTbx = document.getElementById('new-op-code')
 var newOpMnemTbx = document.getElementById('new-op-mnem')
 var updateOpCodeTbx = document.getElementById('update-op-code')
 
-var opCodeLB = {}
-
 opCodeLB.deleteEntry = () => {
   if (newOpCodeTbx.value == "") return
   opCodes.remove(newOpCodeTbx.value)
+  mStateLB.selectedOpCode = null
+  mStateLB.refresh()
   opCodeLB.refresh()
   newOpCodeTbx.value = ''
 }
@@ -19,6 +21,8 @@ opCodeLB.saveEntry = () => {
     newOpMnemTbx.value,
     updateOpCodeTbx.value != "" ? updateOpCodeTbx.value : false
   )
+  mStateLB.selectedOpCode = null
+  mStateLB.refresh()
   opCodeLB.refresh()
   newOpCodeTbx.value = ''
   newOpMnemTbx.value = ''
@@ -44,14 +48,21 @@ opCodeLB.createEntryEle = (opCode, opMnem) => {
 }
 
 function entryClickHandler(event) {
-  alert(this.id + " --- " + event.target);
+  //alert(this.id + " --- " + event.target);
+  let code = event.currentTarget.id.split('-')[1]
+  let codeObj = opCodes.containsCode(code)
+  if(codeObj != false) {
+    mStateLB.selectedOpCode = codeObj
+    mStateLB.refresh()
+  }
+  
 }
 
 opCodeLB.refresh = () => {
   if (opCodes.opCodeList != null) {
-    opCodeListbox.replaceChildren()
+    opCodeLB.listbox.replaceChildren()
     opCodes.opCodeList.forEach((item) => {
-      opCodeListbox.appendChild(
+      opCodeLB.listbox.appendChild(
         opCodeLB.createEntryEle(item.code, item.mnemonic)
       )
     })

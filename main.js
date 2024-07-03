@@ -15,31 +15,36 @@ function saveState() {
   console.log("Data Saved")
   localStorage.setItem("opCodeList", JSON.stringify(opCodes.opCodeList))
   localStorage.setItem("ctrlLineLut", JSON.stringify(ctrlLines.clList))
+  localStorage.setItem('ctrlLineUID', ctrlLines.nextUID)
 }
 
 function loadState() {
   console.log("Data Loaded")
   let opListHldr = localStorage.getItem("opCodeList")
   let ctrlLineHldr = localStorage.getItem("ctrlLineLut")
+  let ctrlLineUID = localStorage.getItem('ctrlLineUID')
 
   if(opListHldr != null) {opCodes.opCodeList = JSON.parse(opListHldr)}
   if(ctrlLineHldr != null) {ctrlLines.clList = JSON.parse(ctrlLineHldr)}
+  if(ctrlLineUID != null) {ctrlLines.nextUID = ctrlLineUID}
+
 }
 
 //-------------- Ctrl Line List Functions ---------
 function ctrlLineEntry(bit,name,group,overrideColor=false) {
-  this.uid = ctrlLines.nextUID++
+  this.uid = ctrlLines.nextUID
   this.bit = bit // 0
   this.name = name//'IP_TO_ADDY'
   this.group = group//'ALU'
   this.overrideColor = overrideColor// hex color or false
+  ctrlLines.nextUID++
 }
 
 ctrlLines.addUpdate = (bit=false,name=false,group=false,
                        overrideColor=false,
                        ctrlLineUID=false) => {
   let ctrlL = ctrlLines.containsCode(ctrlLineUID)
-  if(ctrlL) {
+  if(ctrlLineUID != false && ctrlL) {
     if(bit) ctrlL.bit = bit
     if(name) ctrlL.name = name
     if(group) ctrlL.group = group
@@ -56,20 +61,20 @@ ctrlLines.addUpdate = (bit=false,name=false,group=false,
 }
 
 ctrlLines.remove = (ctrlLineUID) => {
-  let ctrlL = ctrlLines.containsCode(ctrlLineUID)
-  if(ctrlL) {
-    const x = ctrlLines.clList.splice(ctrlL, 1);
-    console.log("Deleted ctrlLine: " + x)
-  } else {
-    return
+  for(i in ctrlLines.clList) {
+    if(ctrlLines.clList[i].uid == ctrlLineUID) {
+      const x = ctrlLines.clList.splice(i, 1);
+      console.log("Deleted ctrlLine: " + x)
+      saveState()
+      break
+    }
   }
-  saveState()
 }
 
 // returns modifiable instance of if found
 ctrlLines.containsCode = (ctrlLineUID) => {
   for(x in ctrlLines.clList) {
-    if(ctrlLines.clList.uid == ctrlLineUID) return ctrlLines.clList[x]
+    if(ctrlLines.clList[x].uid == ctrlLineUID) return ctrlLines.clList[x]
   }
   return false
 }
@@ -78,7 +83,7 @@ ctrlLines.containsCode = (ctrlLineUID) => {
 function opCodeEntry(code,mnemonic) {
   this.code = code
   this.mnemonic = mnemonic
-  this.mCycles = [[1,2,3,4,5,6,7,8,9,0,10,11],[4,1,2]] // 1 item per state
+  this.mStateList = []
 }
 
 // *TODO*: ADD SORTING OPCODES MY CODE
@@ -107,31 +112,12 @@ opCodes.addUpdate = (code, mnemonic, codeChange = false) => {
 }
 
 opCodes.remove = (code) => {
-  let opCode = opCodes.containsCode(code)
-  if(opCode) {
-    const x = opCodes.opCodeList.splice(opCode, 1);
-    console.log("Deleted OpCode: " + x)
-  } else {
-    return
+  for(i in opCodes.opCodeList) {
+    if(opCodes.opCodeList[i].code == code) {
+      const x = opCodes.opCodeList.splice(i, 1);
+      console.log("Deleted ctrlLine: " + x)
+      saveState()
+      break
+    }
   }
-  saveState()
 }
-
-
-// ------------ Example Data Structure -------
-
-// var opCodeList = []
-// var ctrlLineLut = []
-
-// function opCodeEntry(code,mnemonic) {
-//   this.code = code
-//   this.mnemonic = mnemonic
-//   this.mCycles = [] // 1 item per state
-// }
-
-// const myOp = new opCodeEntry('00', 'nop')
-// myOp.mCycles.push(
-//     // array of bits or ctrl lines
-//     [653,43,1967,44,1,55] // needs to be as long as # ctrl lines
-//   )
-// opCodeList.push(myOp)

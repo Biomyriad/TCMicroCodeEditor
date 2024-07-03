@@ -7,85 +7,28 @@
   <link rel="stylesheet" href="styles.css">
   <script src="main.js"></script>
   <script src="opCodeListbox.js" defer></script>
+  <script src="ctrlLineListbox.js" defer></script>
+  <script src="mStateListbox.js" defer></script>
 
   <style>
-    #content {
-      display: flex;
-      justify-content: left;
-      gap: 10px;
-      margin-bottom: 15px;
-      
-      border: 1px solid red;
-    }
-  
-    .scroll-box {
-      background: grey;
-      margin-bottom: 5px;
-      padding: 3px;
-      border: 3px solid #b7b7b7;
-      overflow: hidden;
-      overflow-y: auto;
-    }
     
-    #opcode-listbox {
-      height: 400px;
-      width: 240px;
-    }
-    
-    #opcode-statelist {
-      height: 400px;
-      min-width: 600px;
-    }
-    
-    .mstate-container {
-      border: 3px solid #b7b7b7;
-      background: dimgrey;
-      height: 45px;
-      padding: 4px;
-    }
-    
-    .mStateCtrlLabelSpan {
-      padding-right: 4px;
-      padding-left: 4px;
-    }
-    
-    .mStateCtrlLabelSpan:nth-child(even) {
-      background-color: #e0e000
-    }
-    
-    #popup {
-      display: flex;
-      justify-content: left;
-      gap: 10px;
-      margin-bottom: 15px;
-      
-      border: 1px solid red;
-    }
-    
-    #ctrllines-controls {
-      height: 400px;
-      width: 240px;
-      
-      background: grey;
-      margin-bottom: 5px;
-      padding: 3px;
-      border: 3px solid #b7b7b7;
-    }
-    
-    #ctrllines-available {
-      height: 400px;
-      width: 240px;
-    }
-    
-    #ctrllines-selected {
-      height: 400px;
-      width: 240px;
-    }
     
   </style>
 
 </head>
 <body onload="initApp()">
+  <div id="option-bar">
+    <div>
+      <label>State:</label>
+      <button>Save</button>
+      <button>Load</button>
+    </div>
+    <div>
+      <label>Export to bin:</label>
+      <button>Save</button>
+    </div>
+  </div>
+  
   <div id="content">
     <div>   <!-- OP Code List -->
       <div class="scroll-box" id="opcode-listbox"></div>
@@ -102,62 +45,185 @@
     
     <div>
       <div class="scroll-box" id="opcode-statelist"></div>
+      <div style="display: flex; justify-content: center; gap: 5px;">
+        <button onclick="mStateLB.addState()">Add</button>
+        <button onclick="mStateLB.removeState()">Remove</button>
+      </div>
     </div>
   </div>
   
   <div id="popup">
     <div class="scroll-box" id="ctrllines-available"></div>
-    <div class="" id="ctrllines-controls"></div>
+    <div class="" id="ctrllines-controls">
+      <div id="ctrlform">
+        <input type="number" id="ctrlform-bit" placeholder="Bit">
+        <input type="text" id="ctrlform-name" placeholder="Name">
+        <input type="text" id="ctrlform-group" placeholder="Group">
+        <input type="text" id="ctrlform-overridecolor" placeholder="color">
+        <div style="display: flex; justify-content: center; gap: 5px;">
+          <button onclick="ctrlLineLB.saveEntry()">Save</button>
+          <button onclick="ctrlLineLB.deleteEntry()">Delete</button>
+        </div>
+      </div>
+      <div id="actionCtrls">
+        <button onclick="ctrlLineStateLB.addCtrlToOpState()">=></button>
+        <button onclick="ctrlLineStateLB.removeCtrlFromOpState()"><=</button>
+        <button onclick="ctrlLineStateLB.deselectCtrl()">deSel</button>
+      </div>
+    </div>
     <div class="scroll-box" id="ctrllines-selected"></div>
   </div>
+
 
   <div style="margin-bottom: 20px;">
     <button onclick="TEST()" style="width: 57px;">TEST</button>
     <button onclick="TEST2()" style="width: 57px;">TEST2</button>
   </div>
+  
 
   <script>
 
-var stateListListbox = document.getElementById('opcode-statelist')
-//var newOpCodeTbx = document.getElementById('new-op-code')
-  
-var mStateLB = {}
 
-mStateLB.createEntryEle = (arr = ["IP_ADDY","8BIT_BUS","INC_HL","INC_ADDY",'REG_A_SAVE','REG_B_OE2',"EOI"]) => {
-  let ele = document.createElement("div")
 
-  ele.addEventListener("click", mStateLB.entryClickHandler);
-  ele.id = "xxxxx"
-  ele.className ="mstate-container"
+// ----------- ctrl lines ---------
+
+var ctrlLineStateLB = {}
+ctrlLineStateLB.listbox = document.getElementById('ctrllines-selected')
+ctrlLineStateLB.selected = null
+
+ctrlLineStateLB.addCtrlToOpState = () => {
+  if(mStateLB.selectedOpCode == null ||
+     mStateLB.selectedStateIdx == null ||
+     ctrlLineLB.selectedUid == null ) return
   
-  for(i in arr) {
-    let ctrlSpan = document.createElement("span")
-    ctrlSpan.className = 'mStateCtrlLabelSpan'
-    ctrlSpan.innerText = arr[i]
-    ele.appendChild(ctrlSpan)
+  let selectedCtrlUID = ctrlLineLB.selectedUid
+  let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
+  for(i in selectedList) {
+    if(selectedList[i] == selectedCtrlUID) return
   }
+  
+  selectedList.push(selectedCtrlUID)
+  ctrlLineLB.selectedUid = null
+  ctrlLineStateLB.selected = null
+  saveState()
+  mStateLB.refresh()
+  ctrlLineStateLB.refresh()
+  
+}
+
+ctrlLineStateLB.removeCtrlFromOpState = () => {
+  if(mStateLB.selectedOpCode == null ||
+     mStateLB.selectedStateIdx == null ||
+     ctrlLineStateLB.selected == null ) return
+  
+  let selectedCtrlUID = ctrlLineStateLB.selected
+  let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
+  for(i in selectedList) {
+    if(selectedList[i] == selectedCtrlUID) {
+      selectedList.splice(i, 1)
+    }
+  }
+  
+  ctrlLineStateLB.selected = null
+  saveState()
+  mStateLB.refresh()
+  ctrlLineStateLB.refresh()
+}
+
+ctrlLineStateLB.deselectCtrl = () => {
+  ctrlLineLB.selectedUid = null
+  ctrlFormBitTbx.value = ''
+  ctrlFormNameTbx.value = ''
+  ctrlFormGroupTbx.value = ''
+  ctrlFormOverrideColorTbx.value = ''
+}
+
+ctrlLineStateLB.createEntryEle = (ctrlLineUid) => {
+  let ele = document.createElement("div")
+  //let tx1 = document.createElement("span")
+  //let tx2 = document.createElement("span")
+  let tx3 = document.createElement('span')
+  //let tx4 = document.createElement("span")
+  //let tx5 = document.createElement("span")
+  
+
+  ele.addEventListener("click", ctrlLineStateLB.entryClickHandler);
+  ele.id = "ctrllineselected-" + ctrlLineUid
+  //tx1.innerText = bit
+  //tx2.innerText = ' - '
+  tx3.innerText = ctrlLines.containsCode(ctrlLineUid).name//name
+  //tx4.innerText = ' - '
+  //tx5.innerText = group
+  //ele.appendChild(tx1)
+  //ele.appendChild(tx2)
+  ele.appendChild(tx3)
+  //ele.appendChild(tx4)
+  //ele.appendChild(tx5)
 
   return ele
 }
 
-mStateLB.entryClickHandler = (event) => {
-  alert(event.currentTarget.id);
+ctrlLineStateLB.entryClickHandler = (event) => {
+  ctrlLineStateLB.selected = event.currentTarget.id.split('-')[1]
 }
   
+ctrlLineStateLB.refresh = () => {
+  if(mStateLB.selectedOpCode != null && 
+     mStateLB.selectedStateIdx != null) {
+  
+    ctrlLineStateLB.selected = null
+    let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
+    ctrlLineStateLB.listbox.replaceChildren()
+    for(i in selectedList) {
+      ctrlLineStateLB.listbox.appendChild(
+        ctrlLineStateLB.createEntryEle(selectedList[i])
+      )
+    }
+  } else {
+    ctrlLineStateLB.listbox.replaceChildren()
+  }
+}
+
     
     // --------- ONLOAD ------------
     function initApp() {
       loadState()
       opCodeLB.refresh()
+      ctrlLineLB.refresh()
       
-      stateListListbox.appendChild(mStateLB.createEntryEle())
+      //mStateLB.listbox.appendChild(mStateLB.createEntryEle())
     }
 //-------------------
     function TEST() {
-
+      //alert()
+      //localStorage.removeItem("ctrlLineLut")
+      
+      var input = document.createElement('input');
+      input.type = 'file';
+      
+      input.onchange = e => {
+      
+        // getting a hold of the file reference
+        var file = e.target.files[0];
+      
+        // setting up the reader
+        var reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+      
+        // here we tell the reader what to do when it's done reading...
+        reader.onload = readerEvent => {
+          var content = readerEvent.target.result; // this is the content!
+          console.log(content);
+        }
+      
+      }
+      
+      input.click();
     }
     function TEST2() {
-
+      
+      ctrlLinesAvailable.appendChild(ctrlLineLB.createEntryEle(ctrlLines.clList[0].bit,ctrlLines.clList[0].name,ctrlLines.clList[0].group,ctrlLines.clList[0].uid))
+    console.log(ctrlLines.clList[2])
     }
 
 
