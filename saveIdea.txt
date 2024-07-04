@@ -1,0 +1,19 @@
+example of: 
+3 states per op
+6 bytes per state
+
+if bytes per state > 8 (64bit) then
+split from master array below
+then save each file (zip?)
+
+[ 
+  [byte0,...,maxByte] JMP
+  [2C,FF,00,73,CF,88]
+  [] 
+  [] NOP
+  []
+  []
+  [] ADD A,B
+  []
+  []
+]

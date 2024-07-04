@@ -9,7 +9,8 @@
   <script src="opCodeListbox.js" defer></script>
   <script src="ctrlLineListbox.js" defer></script>
   <script src="mStateListbox.js" defer></script>
-
+  <script src="saveLoadFileData.js" defer></script>
+  <!-- started 6-22-24 -->
   <style>
     
     
@@ -20,14 +21,20 @@
   <div id="option-bar">
     <div>
       <label>State:</label>
-      <button>Save</button>
-      <button>Load</button>
+      <button onclick="saveStateToFile()">Save</button>
+      <button onclick="loadStateFromFile()">Load</button>
     </div>
     <div>
       <label>Export to bin:</label>
       <button>Save</button>
     </div>
   </div>
+  
+  <div style="margin-bottom: 20px; margin-top: 20px;">
+    <button onclick="TEST()" style="width: 57px; height: 57px; margin-right: 30px;">TEST</button>
+    <button onclick="TEST2()" style="width: 57px; height: 57px;">TEST2</button>
+  </div>
+  
   
   <div id="content">
     <div>   <!-- OP Code List -->
@@ -73,13 +80,6 @@
     </div>
     <div class="scroll-box" id="ctrllines-selected"></div>
   </div>
-
-
-  <div style="margin-bottom: 20px;">
-    <button onclick="TEST()" style="width: 57px;">TEST</button>
-    <button onclick="TEST2()" style="width: 57px;">TEST2</button>
-  </div>
-  
 
   <script>
 
@@ -195,35 +195,43 @@ ctrlLineStateLB.refresh = () => {
     }
 //-------------------
     function TEST() {
-      //alert()
-      //localStorage.removeItem("ctrlLineLut")
+      //ctrlLines.clList
+      //opCodes.opCodeList
+      //alert(2**3) // 2^pos
       
-      var input = document.createElement('input');
-      input.type = 'file';
+      // highest bit
+      let clItem = ctrlLines.clList
+      let maxBit = 0
+      for(i in clItem) {
+        if(clItem[i].bit > maxBit) maxBit = clItem[i].bit
+      }
+      maxBit = parseInt(maxBit)
       
-      input.onchange = e => {
+      // maxBit: max bits
+      let numBytes = Math.ceil((maxBit+1)/8)
+      let numFiles = Math.ceil(numBytes/8)
       
-        // getting a hold of the file reference
-        var file = e.target.files[0];
+      //alert(maxBit + ' ' + numBytes + ' ' + numFiles)
       
-        // setting up the reader
-        var reader = new FileReader();
-        reader.readAsText(file, 'UTF-8');
-      
-        // here we tell the reader what to do when it's done reading...
-        reader.onload = readerEvent => {
-          var content = readerEvent.target.result; // this is the content!
-          console.log(content);
-        }
-      
+      let opItem = opCodes.opCodeList
+      let maxStates = 0
+      for(i in opItem) {
+        if(opItem[i].mStateList.length > maxStates) maxStates = opItem[i].mStateList.length
       }
       
-      input.click();
+      //alert(maxStates)
+      
+      let bitPos = 16
+      let byteIdx = Math.floor(bitPos/8)
+      let bitIdx = bitPos - (byteIdx*8)
+      
+      alert(byteIdx + ' - ' + bitIdx)
     }
     function TEST2() {
+      loadFile(alert)
       
-      ctrlLinesAvailable.appendChild(ctrlLineLB.createEntryEle(ctrlLines.clList[0].bit,ctrlLines.clList[0].name,ctrlLines.clList[0].group,ctrlLines.clList[0].uid))
-    console.log(ctrlLines.clList[2])
+     //saveTxtFile( [1,22,32,56,74], "helo.xyz")
+      
     }
 
 

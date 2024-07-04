@@ -18,6 +18,34 @@ function saveState() {
   localStorage.setItem('ctrlLineUID', ctrlLines.nextUID)
 }
 
+function saveStateToFile() {
+  let data = {
+    opCodeList: opCodes.opCodeList,
+    ctrlLineLut: ctrlLines.clList,
+    ctrlLineUID: ctrlLines.nextUID
+  }
+  
+  saveTxtFile(JSON.stringify(data), 'saveState.txt')
+}
+
+function loadStateFromFile() {
+  loadFile(assignLoadedData)
+}
+
+function assignLoadedData(data) {
+  data = JSON.parse(data)
+  
+  console.log(data.opCodeList)
+  console.log(data.ctrlLineLut)
+  console.log(data.ctrlLineUID)
+  
+  opCodes.opCodeList = data.opCodeList
+  ctrlLines.clList = data.ctrlLineLut
+  ctrlLines.nextUID = data.ctrlLineUID
+  
+  saveState()
+}
+
 function loadState() {
   console.log("Data Loaded")
   let opListHldr = localStorage.getItem("opCodeList")
