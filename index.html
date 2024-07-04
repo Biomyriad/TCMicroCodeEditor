@@ -9,6 +9,7 @@
   <script src="opCodeListbox.js" defer></script>
   <script src="ctrlLineListbox.js" defer></script>
   <script src="mStateListbox.js" defer></script>
+  <script src="ctrlLineStateListbox.js" defer></script>
   <script src="saveLoadFileData.js" defer></script>
   <!-- started 6-22-24 -->
   <style>
@@ -82,121 +83,16 @@
   </div>
 
   <script>
-
-
-
-// ----------- ctrl lines ---------
-
-var ctrlLineStateLB = {}
-ctrlLineStateLB.listbox = document.getElementById('ctrllines-selected')
-ctrlLineStateLB.selected = null
-
-ctrlLineStateLB.addCtrlToOpState = () => {
-  if(mStateLB.selectedOpCode == null ||
-     mStateLB.selectedStateIdx == null ||
-     ctrlLineLB.selectedUid == null ) return
-  
-  let selectedCtrlUID = ctrlLineLB.selectedUid
-  let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
-  for(i in selectedList) {
-    if(selectedList[i] == selectedCtrlUID) return
-  }
-  
-  selectedList.push(selectedCtrlUID)
-  ctrlLineLB.selectedUid = null
-  ctrlLineStateLB.selected = null
-  saveState()
-  mStateLB.refresh()
-  ctrlLineStateLB.refresh()
-  
-}
-
-ctrlLineStateLB.removeCtrlFromOpState = () => {
-  if(mStateLB.selectedOpCode == null ||
-     mStateLB.selectedStateIdx == null ||
-     ctrlLineStateLB.selected == null ) return
-  
-  let selectedCtrlUID = ctrlLineStateLB.selected
-  let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
-  for(i in selectedList) {
-    if(selectedList[i] == selectedCtrlUID) {
-      selectedList.splice(i, 1)
-    }
-  }
-  
-  ctrlLineStateLB.selected = null
-  saveState()
-  mStateLB.refresh()
-  ctrlLineStateLB.refresh()
-}
-
-ctrlLineStateLB.deselectCtrl = () => {
-  ctrlLineLB.selectedUid = null
-  ctrlFormBitTbx.value = ''
-  ctrlFormNameTbx.value = ''
-  ctrlFormGroupTbx.value = ''
-  ctrlFormOverrideColorTbx.value = ''
-}
-
-ctrlLineStateLB.createEntryEle = (ctrlLineUid) => {
-  let ele = document.createElement("div")
-  //let tx1 = document.createElement("span")
-  //let tx2 = document.createElement("span")
-  let tx3 = document.createElement('span')
-  //let tx4 = document.createElement("span")
-  //let tx5 = document.createElement("span")
-  
-
-  ele.addEventListener("click", ctrlLineStateLB.entryClickHandler);
-  ele.id = "ctrllineselected-" + ctrlLineUid
-  //tx1.innerText = bit
-  //tx2.innerText = ' - '
-  tx3.innerText = ctrlLines.containsCode(ctrlLineUid).name//name
-  //tx4.innerText = ' - '
-  //tx5.innerText = group
-  //ele.appendChild(tx1)
-  //ele.appendChild(tx2)
-  ele.appendChild(tx3)
-  //ele.appendChild(tx4)
-  //ele.appendChild(tx5)
-
-  return ele
-}
-
-ctrlLineStateLB.entryClickHandler = (event) => {
-  ctrlLineStateLB.selected = event.currentTarget.id.split('-')[1]
-}
-  
-ctrlLineStateLB.refresh = () => {
-  if(mStateLB.selectedOpCode != null && 
-     mStateLB.selectedStateIdx != null) {
-  
-    ctrlLineStateLB.selected = null
-    let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
-    ctrlLineStateLB.listbox.replaceChildren()
-    for(i in selectedList) {
-      ctrlLineStateLB.listbox.appendChild(
-        ctrlLineStateLB.createEntryEle(selectedList[i])
-      )
-    }
-  } else {
-    ctrlLineStateLB.listbox.replaceChildren()
-  }
-}
-
     
     // --------- ONLOAD ------------
     function initApp() {
       loadState()
       opCodeLB.refresh()
       ctrlLineLB.refresh()
-      
-      //mStateLB.listbox.appendChild(mStateLB.createEntryEle())
     }
-//-------------------
+//---------- TEST FUNCTIONS ---------
     function TEST() {
-      //ctrlLines.clList
-      //opCodes.opCodeList
+
       //alert(2**3) // 2^pos
       
       // highest bit
@@ -215,23 +111,30 @@ ctrlLineStateLB.refresh = () => {
       
       let opItem = opCodes.opCodeList
       let maxStates = 0
+      let maxOpcode = 0
       for(i in opItem) {
+        if(Number('0x' + opItem[i].code) > maxOpcode) maxOpcode = Number('0x' + opItem[i].code)
         if(opItem[i].mStateList.length > maxStates) maxStates = opItem[i].mStateList.length
       }
       
-      //alert(maxStates)
+      alert(maxStates + ' - ' + maxOpcode)
       
       let bitPos = 16
       let byteIdx = Math.floor(bitPos/8)
       let bitIdx = bitPos - (byteIdx*8)
       
-      alert(byteIdx + ' - ' + bitIdx)
+      //alert(byteIdx + ' - ' + bitIdx)
+      
     }
     function TEST2() {
-      loadFile(alert)
+      //localStorage.clear()
+      opCodes.opCodeList.sort((a,b) => {
+        console.log(Number('0x'+ a.code) + ' - ' + Number('0x' + b.code))
+        if(Number('0x'+ a.code) > Number('0x' + b.code)) return 1
+        return -1
+      })
       
-     //saveTxtFile( [1,22,32,56,74], "helo.xyz")
-      
+      opCodeLB.refresh()
     }
 
 

@@ -13,6 +13,17 @@ ctrlLines.clList = []
 
 function saveState() {
   console.log("Data Saved")
+  
+  opCodes.opCodeList.sort((a,b) => {
+    if(Number('0x'+ a.code) > Number('0x' + b.code)) return 1
+    return -1
+  })
+  
+  ctrlLines.clList.sort((a,b) =>  {
+    if(Number(a.bit) > Number(b.bit)) return 1
+    return -1
+  })
+  
   localStorage.setItem("opCodeList", JSON.stringify(opCodes.opCodeList))
   localStorage.setItem("ctrlLineLut", JSON.stringify(ctrlLines.clList))
   localStorage.setItem('ctrlLineUID', ctrlLines.nextUID)
@@ -35,15 +46,16 @@ function loadStateFromFile() {
 function assignLoadedData(data) {
   data = JSON.parse(data)
   
-  console.log(data.opCodeList)
-  console.log(data.ctrlLineLut)
-  console.log(data.ctrlLineUID)
-  
   opCodes.opCodeList = data.opCodeList
   ctrlLines.clList = data.ctrlLineLut
   ctrlLines.nextUID = data.ctrlLineUID
   
   saveState()
+  location.reload()
+}
+
+function exportProject() {
+  var a = ''
 }
 
 function loadState() {
