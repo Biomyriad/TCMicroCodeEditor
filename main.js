@@ -123,7 +123,7 @@ ctrlLines.containsCode = (ctrlLineUID) => {
 function opCodeEntry(code,mnemonic) {
   this.code = code
   this.mnemonic = mnemonic
-  this.mStateList = []
+  this.mStateList = [] //holds array per state the hold the UID of a ctrlLine
 }
 
 // *TODO*: ADD SORTING OPCODES MY CODE

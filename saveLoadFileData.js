@@ -28,7 +28,7 @@ function loadFile(callBack) {
 
 //-----------------------------
 
-function saveBinFile(data, fileName, fileType) {
+function saveBinFile(data, fileName) {
   data = new Uint8Array(data)
   data = new File([data], fileName, { type: "application/octet-stream" });
   const url = URL.createObjectURL(data);
