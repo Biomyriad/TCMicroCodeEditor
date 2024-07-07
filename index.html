@@ -99,43 +99,8 @@
     
     function TEST2() {
       //localStorage.clear()
-      let a = ['a','b','c','d']
-      let b = ['d','e','f']
-      a = a.concat(b)
-      console.log(a)
     }
     
-    function aaaa() {
-       //alert(2**3) // 2^pos
-      
-       let clItem = ctrlLines.clList
-       let maxBit = 0
-       for (i in clItem) {
-         if (clItem[i].bit > maxBit) maxBit = clItem[i].bit
-       }
-       maxBit = parseInt(maxBit)
-      //alert(maxBit)
-      
-       let numBytes = Math.ceil((maxBit + 1) / 8)
-       let numFiles = Math.ceil(numBytes / 8)
-       //alert(numBytes + ' ' + numFiles)
-      
-       let opItem = opCodes.opCodeList
-       let maxStates = 0
-       let maxOpcode = 0
-       for (i in opItem) {
-         if (Number('0x' + opItem[i].code) > maxOpcode) maxOpcode = Number('0x' + opItem[i].code)
-         if (opItem[i].mStateList.length > maxStates) maxStates = opItem[i].mStateList.length
-       }
-       //alert(maxStates + ' - ' + maxOpcode)
-      
-       let bitPos = 16
-       let byteIdx = Math.floor(bitPos / 8)
-       let bitIdx = bitPos - (byteIdx * 8)
-       //alert(byteIdx + ' - ' + bitIdx)
-    }
-
-
   </script>
 
 </body>
