@@ -40,6 +40,7 @@ function saveStateToFile() {
 }
 
 function loadStateFromFile() {
+  localStorage.clear()
   loadFile(assignLoadedData)
 }
 

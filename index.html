@@ -82,6 +82,10 @@
     </div>
     <div class="scroll-box" id="ctrllines-selected"></div>
   </div>
+  
+  <div>
+    <p id="exportText">hello</p>
+  </div>
 
   <script>
     
@@ -94,7 +98,40 @@
     
 //---------- TEST FUNCTIONS ---------
     function TEST() {
-      exportData()
+      let res = exportData()
+      let stats = getStats()
+      //console.log('Num Opcodes: ' + stats.maxOpCode + '\n' +
+      //        'has states ea: ' + stats.maxStates + '\n' +
+      //        'containing num bytes: ' + stats.numBytes + '\n' +
+      //        'split between num files: ' + stats.numFiles + '\n' 
+      //)
+      let bytePerWord = 8
+      let newOut = []
+      let hldr = []
+      for(let x=0;x<stats.maxOpCode;x++) {
+        for(let y=0;y<stats.maxStates;y++) {
+          hldr = []
+          for(let z=stats.numBytes-1;z>-1;z--) {
+            let opOff = x*stats.maxStates*stats.numBytes
+            let stateOff = y*stats.numBytes
+            hldr.push(res[opOff+stateOff+z])
+            //console.log(res[opOff+stateOff+z])
+            
+          }
+          //console.log('hl' + hldr)
+          //console.log('0x'+toHexString(hldr))
+          newOut.push('0x'+toHexString(hldr))
+        }
+      }
+      let txtOut = document.getElementById('exportText').innerHTML 
+      console.log(newOut)
+      let txtHldr = ''
+      for(let i=0;i<newOut.length;i++) {
+        txtHldr = txtHldr + newOut[i] + ' '
+        if(i % 5 == 0 && i!=0) txtHldr = txtHldr + '\n'
+        console.log(txtHldr)
+      }
+      txtOut = txtHldr
     }
     
     function TEST2() {
