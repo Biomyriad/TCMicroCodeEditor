@@ -16,8 +16,13 @@ button {
 input {
   color: #acacac;
   background-color: #3b3b3b;
-  border: 2px solid #858585;
+  border: 1px solid #858585;
   border-radius: 3px;
+}
+
+textarea {
+  background-color: #3b3b3b;
+  width: 850px;
 }
 
 #option-bar {
@@ -57,7 +62,7 @@ input {
 
 .mstate-container {
   border: 3px solid #686868;
-  background: #red;
+  background: #1b1b1b;
   height: 45px;
   padding: 4px;
   overflow-wrap: anywhere;
@@ -74,7 +79,9 @@ input {
 }
 
 .mStateCtrlLabelSpan:nth-child(even) {
-  background-color: #e0e000
+  background-color: #303030;
+  border-left: 1px solid blue;
+  border-right: 1px solid blue;
 }
 
 #popup {

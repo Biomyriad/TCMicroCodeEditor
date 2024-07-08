@@ -10,7 +10,7 @@ function exportData() {
   // maxOpCode
   let finalOutput = []
 
-  for (let opCnt = 0; opCnt < stats.maxOpCode; opCnt++) {
+  for (let opCnt = 0; opCnt <= stats.maxOpCode; opCnt++) {
     let curOpCode = opCodes.containsCode('0' + toHex(opCnt))
     console.log('OpCode: '+ '0' + toHex(opCnt) + '  - ' + (curOpCode ? curOpCode.mnemonic : '/-- No Imp --/'))
     if (curOpCode) {
@@ -19,7 +19,7 @@ function exportData() {
       finalOutput = finalOutput.concat(resolveOpCode(false, stats))
     }
   }
-  console.log(finalOutput)
+  //console.log(finalOutput)
   //alert(finalOutput)
   return finalOutput
 }
@@ -74,7 +74,6 @@ function getStats() {
     if (Number('0x' + opItem[i].code) > maxOpCode) maxOpCode = Number('0x' + opItem[i].code)
     if (opItem[i].mStateList.length > maxStates) maxStates = opItem[i].mStateList.length
   }
-  if(maxOpCode == 0 && opItem.length == 1) maxOpCode = 1 // fix if single op == 0x00 
   //alert(maxStates + ' - ' + maxOpCode)
 
   //let bitPos = 16

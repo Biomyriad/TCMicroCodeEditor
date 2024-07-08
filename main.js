@@ -127,8 +127,6 @@ function opCodeEntry(code,mnemonic) {
   this.mStateList = [] //holds array per state the hold the UID of a ctrlLine
 }
 
-// *TODO*: ADD SORTING OPCODES MY CODE
-
 // returns modifiable instance of if found
 opCodes.containsCode = (opCode) => {
   for(x in opCodes.opCodeList) {
