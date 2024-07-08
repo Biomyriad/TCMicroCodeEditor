@@ -55,6 +55,15 @@ input {
   min-width: 600px;
 }
 
+.mstate-container {
+  border: 3px solid #686868;
+  background: #red;
+  height: 45px;
+  padding: 4px;
+  overflow-wrap: anywhere;
+  margin-bottom: 5px;
+}
+
 .mstate-container:nth-child(even) {
   /* border: 3px solid #757575; */
 }
