@@ -11,8 +11,8 @@ function exportData() {
   let finalOutput = []
 
   for (let opCnt = 0; opCnt <= stats.maxOpCode; opCnt++) {
-    let curOpCode = opCodes.containsCode('0' + toHex(opCnt))
-    console.log('OpCode: '+ '0' + toHex(opCnt) + '  - ' + (curOpCode ? curOpCode.mnemonic : '/-- No Imp --/'))
+    let curOpCode = opCodes.containsCode(toHex(opCnt).toUpperCase())
+    console.log('OpCode: ' + toHex(opCnt).toUpperCase() + '  - ' + (curOpCode ? curOpCode.mnemonic : '/-- No Imp --/'))
     if (curOpCode) {
       finalOutput = finalOutput.concat(resolveOpCode(curOpCode, stats))
     } else {
@@ -101,7 +101,7 @@ function getStats() {
 function toHex(val) {
   if (typeof(val) == "number") {
     let out = val.toString(16)
-    if (out.lenth <= 1) out = '0'
+    if (out.length <= 1) out = '0' + out
     return out
   } else { // use for if type == string
     return val

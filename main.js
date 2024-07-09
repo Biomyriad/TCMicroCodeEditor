@@ -137,7 +137,7 @@ function opCodeEntry(code,mnemonic) {
 // returns modifiable instance of if found
 opCodes.containsCode = (opCode) => {
   for(x in opCodes.opCodeList) {
-    if(opCodes.opCodeList[x].code == opCode) return opCodes.opCodeList[x]
+    if(opCodes.opCodeList[x].code.toUpperCase() == opCode.toUpperCase()) return opCodes.opCodeList[x]
   }
   return false
 }
