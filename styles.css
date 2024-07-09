@@ -25,6 +25,22 @@ textarea {
   width: 850px;
 }
 
+.selected-opcode {
+  background-color: red;
+}
+
+.selected-mstate {
+  background-color: blue !important;
+}
+
+.selected-statectrlline {
+  background-color: green;
+}
+
+.selected-ctrlline {
+  background-color: yellow
+}
+
 #option-bar {
   height: 50px;
   background: #101010;

@@ -1,21 +1,23 @@
 var ctrlLineStateLB = {}
 ctrlLineStateLB.listbox = document.getElementById('ctrllines-selected')
 ctrlLineStateLB.selected = null
+ctrlLineStateLB.selectedElem = null
 
 ctrlLineStateLB.addCtrlToOpState = () => {
-  if(mStateLB.selectedOpCode == null ||
+  if(opCodeLB.selectedOpCode == null ||
      mStateLB.selectedStateIdx == null ||
      ctrlLineLB.selectedUid == null ) return
   
   let selectedCtrlUID = ctrlLineLB.selectedUid
-  let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
+  let selectedList = opCodeLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
   for(i in selectedList) {
     if(selectedList[i] == selectedCtrlUID) return
   }
   
   selectedList.push(selectedCtrlUID)
-  ctrlLineLB.selectedUid = null
+  //ctrlLineLB.selectedUid = null
   ctrlLineStateLB.selected = null
+   if(ctrlLineStateLB.selectedElem) ctrlLineStateLB.selectedElem.classList.remove('selected-statectrlline')
   saveState()
   mStateLB.refresh()
   ctrlLineStateLB.refresh()
@@ -23,30 +25,23 @@ ctrlLineStateLB.addCtrlToOpState = () => {
 }
 
 ctrlLineStateLB.removeCtrlFromOpState = () => {
-  if(mStateLB.selectedOpCode == null ||
+  if(opCodeLB.selectedOpCode == null ||
      mStateLB.selectedStateIdx == null ||
      ctrlLineStateLB.selected == null ) return
   
   let selectedCtrlUID = ctrlLineStateLB.selected
-  let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
+  let selectedList = opCodeLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
   for(i in selectedList) {
     if(selectedList[i] == selectedCtrlUID) {
       selectedList.splice(i, 1)
     }
   }
   
+  if(ctrlLineStateLB.selectedElem) ctrlLineStateLB.selectedElem.classList.remove('selected-statectrlline')
   ctrlLineStateLB.selected = null
   saveState()
   mStateLB.refresh()
   ctrlLineStateLB.refresh()
-}
-
-ctrlLineStateLB.deselectCtrl = () => {
-  ctrlLineLB.selectedUid = null
-  ctrlFormBitTbx.value = ''
-  ctrlFormNameTbx.value = ''
-  ctrlFormGroupTbx.value = ''
-  ctrlFormOverrideColorTbx.value = ''
 }
 
 ctrlLineStateLB.createEntryEle = (ctrlLineUid) => {
@@ -76,14 +71,18 @@ ctrlLineStateLB.createEntryEle = (ctrlLineUid) => {
 
 ctrlLineStateLB.entryClickHandler = (event) => {
   ctrlLineStateLB.selected = event.currentTarget.id.split('-')[1]
+  if(ctrlLineStateLB.selectedElem) ctrlLineStateLB.selectedElem.classList.remove('selected-statectrlline')      
+  ctrlLineStateLB.selectedElem = event.currentTarget
+  ctrlLineStateLB.selectedElem.classList.add('selected-statectrlline')
 }
   
 ctrlLineStateLB.refresh = () => {
-  if(mStateLB.selectedOpCode != null && 
+  if(opCodeLB.selectedOpCode != null && 
      mStateLB.selectedStateIdx != null) {
   
+    if(ctrlLineStateLB.selectedElem) ctrlLineStateLB.selectedElem.classList.remove('selected-statectrlline')
     ctrlLineStateLB.selected = null
-    let selectedList = mStateLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
+    let selectedList = opCodeLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
     ctrlLineStateLB.listbox.replaceChildren()
     for(i in selectedList) {
       ctrlLineStateLB.listbox.appendChild(

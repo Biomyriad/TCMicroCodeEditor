@@ -1,21 +1,24 @@
 
 var mStateLB = {}
 mStateLB.listbox = document.getElementById('opcode-statelist')
-mStateLB.selectedOpCode = null
+mStateLB.selectedElem = null
 mStateLB.selectedStateIdx = null
 
 mStateLB.addState = () => {
-  if(mStateLB.selectedOpCode == null) return
-  mStateLB.selectedOpCode.mStateList.push([])
+  if(opCodeLB.selectedOpCode == null) return
+  opCodeLB.selectedOpCode.mStateList.push([])
+  if(mStateLB.selectedElem) mStateLB.selectedElem.classList.remove('selected-mstate')
+  mStateLB.selectedStateIdx = null
   saveState()
   mStateLB.refresh()
 }
 
 mStateLB.removeState = () => {
   if(mStateLB.selectedStateIdx == null) return
-  mStateLB.selectedOpCode.mStateList.splice(
+  opCodeLB.selectedOpCode.mStateList.splice(
     mStateLB.selectedStateIdx,1
   )
+  if(mStateLB.selectedElem) mStateLB.selectedElem.classList.remove('selected-mstate')
   mStateLB.selectedStateIdx = null
   saveState()
   mStateLB.refresh()
@@ -41,20 +44,23 @@ mStateLB.createEntryEle = (idx,arr) => {
 
 mStateLB.entryClickHandler = (event) => {
   //alert(event.currentTarget.id.split('-')[1]);
+  if(mStateLB.selectedElem) mStateLB.selectedElem.classList.remove('selected-mstate')
+  mStateLB.selectedElem = event.currentTarget
+  mStateLB.selectedElem.classList.add('selected-mstate')
   mStateLB.selectedStateIdx = event.currentTarget.id.split('-')[1]
   ctrlLineStateLB.refresh()
 }
 
 mStateLB.refresh = () => {
-  if(mStateLB.selectedOpCode != null) {
+  if(opCodeLB.selectedOpCode != null) {
     mStateLB.listbox.replaceChildren()
-    mStateLB.selectedOpCode.mStateList.forEach((item,idx) => {
-      mStateLB.listbox.appendChild(
-        mStateLB.createEntryEle(
-          idx,
-          item
-        )
-      )
+    opCodeLB.selectedOpCode.mStateList.forEach((item,idx) => {
+      let elemHldr = mStateLB.createEntryEle(idx,item)
+      if(elemHldr.id == 'mstatelistidx-' + mStateLB.selectedStateIdx) {
+        mStateLB.selectedElem = elemHldr
+        elemHldr.classList.add('selected-mstate')
+      }
+      mStateLB.listbox.appendChild(elemHldr)
     })
     ctrlLineStateLB.refresh()
   } else {

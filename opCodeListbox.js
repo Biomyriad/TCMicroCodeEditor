@@ -1,5 +1,7 @@
 var opCodeLB = {}
 opCodeLB.listbox = document.getElementById('opcode-listbox')
+opCodeLB.selectedOpCode = null
+opCodeLB.selectedElem = null
 
 var newOpCodeTbx = document.getElementById('new-op-code')
 var newOpMnemTbx = document.getElementById('new-op-mnem')
@@ -8,7 +10,8 @@ var updateOpCodeTbx = document.getElementById('update-op-code')
 opCodeLB.deleteEntry = () => {
   if (newOpCodeTbx.value == "") return
   opCodes.remove(newOpCodeTbx.value)
-  mStateLB.selectedOpCode = null
+  if(opCodeLB.selectedElem) opCodeLB.selectedElem.classList.remove('selected-opcode')
+  opCodeLB.selectedOpCode = null
   mStateLB.refresh()
   opCodeLB.refresh()
   newOpCodeTbx.value = ''
@@ -21,7 +24,8 @@ opCodeLB.saveEntry = () => {
     newOpMnemTbx.value,
     updateOpCodeTbx.value != "" ? updateOpCodeTbx.value : false
   )
-  mStateLB.selectedOpCode = null
+  if(opCodeLB.selectedElem) opCodeLB.selectedElem.classList.remove('selected-opcode')
+  opCodeLB.selectedOpCode = null
   mStateLB.refresh()
   opCodeLB.refresh()
   newOpCodeTbx.value = ''
@@ -35,7 +39,7 @@ opCodeLB.createEntryEle = (opCode, opMnem) => {
   let tx2 = document.createElement("span")
   let tx3 = document.createElement("span")
 
-  ele.addEventListener("click", entryClickHandler);
+  ele.addEventListener("click", opCodeLB.entryClickHandler);
   ele.id = "opcodeid-" + opCode
   tx1.innerText = opCode
   tx2.innerText = ' - '
@@ -47,16 +51,20 @@ opCodeLB.createEntryEle = (opCode, opMnem) => {
   return ele
 }
 
-function entryClickHandler(event) {
+opCodeLB.entryClickHandler = (event) => {
   //alert(this.id + " --- " + event.target);
   let code = event.currentTarget.id.split('-')[1]
   let codeObj = opCodes.containsCode(code)
   if(codeObj != false) {
-    mStateLB.selectedOpCode = codeObj
+    opCodeLB.selectedOpCode = codeObj
+    if (opCodeLB.selectedElem) opCodeLB.selectedElem.classList.remove('selected-opcode')
+    opCodeLB.selectedElem = event.currentTarget
+    opCodeLB.selectedElem.classList.add('selected-opcode')
+    mStateLB.selectedStateIdx = null
     mStateLB.refresh()
   }
-  
 }
+
 
 opCodeLB.refresh = () => {
   if (opCodes.opCodeList != null) {

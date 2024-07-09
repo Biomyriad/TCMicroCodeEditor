@@ -1,4 +1,5 @@
 var ctrlLineLB = {}
+ctrlLineLB.selectedElem = null
 ctrlLineLB.selectedUid = null
 ctrlLineLB.listbox = document.getElementById('ctrllines-available')
 
@@ -19,19 +20,30 @@ ctrlLineLB.saveEntry = () => {
   ctrlFormNameTbx.value = ''
   ctrlFormGroupTbx.value = ''
   ctrlFormOverrideColorTbx.value = ''
+  ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
   ctrlLineLB.selectedUid = null
   ctrlLineLB.refresh()
 }
 
 ctrlLineLB.deleteEntry = () => {
   if (ctrlLineLB.selectedUid == null) return
-  ctrlLines.remove(ctrlLineLB.selectedUid)
+  ctrlLines.remove
+  ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
   ctrlLineLB.selectedUid = null
   
   // REMOVE ALL REF FROM ALL OPCODE STATES?
   
   ctrlLineLB.selectedUid = null
   ctrlLineLB.refresh()
+}
+
+ctrlLineLB.deselectCtrl = () => {
+  ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
+  ctrlLineLB.selectedUid = null
+  ctrlFormBitTbx.value = ''
+  ctrlFormNameTbx.value = ''
+  ctrlFormGroupTbx.value = ''
+  ctrlFormOverrideColorTbx.value = ''
 }
 
 ctrlLineLB.createEntryEle = (bit,name,group,uid,overridecolor=false) => {
@@ -61,6 +73,9 @@ ctrlLineLB.createEntryEle = (bit,name,group,uid,overridecolor=false) => {
 
 ctrlLineLB.entryClickHandler = (event) => {
   //alert(event.currentTarget.id.split('-')[1]);
+  if(ctrlLineLB.selectedElem) ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
+  ctrlLineLB.selectedElem = event.currentTarget
+  ctrlLineLB.selectedElem.classList.add('selected-ctrlline')
   ctrlLineLB.selectedUid = event.currentTarget.id.split('-')[1]
   let obj = ctrlLines.containsCode(ctrlLineLB.selectedUid)
   ctrlFormBitTbx.value = obj.bit
