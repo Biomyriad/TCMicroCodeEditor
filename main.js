@@ -81,11 +81,11 @@ function ctrlLineEntry(bit,name,group,overrideColor=false) {
   ctrlLines.nextUID++
 }
 
-ctrlLines.addUpdate = (bit=false,name=false,group=false,
-                       overrideColor=false,
-                       ctrlLineUID=false) => {
-  let ctrlL = ctrlLines.containsCode(ctrlLineUID)
-  if(ctrlLineUID != false && ctrlL) {
+ctrlLines.addUpdate = (bit=false,name=false,
+                       group=false, overrideColor=false) => {
+  //let ctrlL = ctrlLines.containsCode(ctrlLineUID)
+  let ctrlL = ctrlLines.containsCodeBit(bit)
+  if(ctrlL) {
     if(bit) ctrlL.bit = bit
     if(name) ctrlL.name = name
     if(group) ctrlL.group = group
@@ -116,6 +116,13 @@ ctrlLines.remove = (ctrlLineUID) => {
 ctrlLines.containsCode = (ctrlLineUID) => {
   for(x in ctrlLines.clList) {
     if(ctrlLines.clList[x].uid == ctrlLineUID) return ctrlLines.clList[x]
+  }
+  return false
+}
+
+ctrlLines.containsCodeBit = (ctrlLineBit) => {
+  for(x in ctrlLines.clList) {
+    if(ctrlLines.clList[x].bit == ctrlLineBit) return ctrlLines.clList[x]
   }
   return false
 }

@@ -80,7 +80,6 @@ ctrlLineStateLB.refresh = () => {
   if(opCodeLB.selectedOpCode != null && 
      mStateLB.selectedStateIdx != null) {
   
-    if(ctrlLineStateLB.selectedElem) ctrlLineStateLB.selectedElem.classList.remove('selected-statectrlline')
     ctrlLineStateLB.selected = null
     let selectedList = opCodeLB.selectedOpCode.mStateList[mStateLB.selectedStateIdx]
     ctrlLineStateLB.listbox.replaceChildren()

@@ -20,25 +20,28 @@ ctrlLineLB.saveEntry = () => {
   ctrlFormNameTbx.value = ''
   ctrlFormGroupTbx.value = ''
   ctrlFormOverrideColorTbx.value = ''
-  ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
+  if(ctrlLineLB.selectedElem) ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
   ctrlLineLB.selectedUid = null
   ctrlLineLB.refresh()
 }
 
 ctrlLineLB.deleteEntry = () => {
   if (ctrlLineLB.selectedUid == null) return
-  ctrlLines.remove
-  ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
+  ctrlLines.remove(ctrlLineLB.selectedUid)
+  ctrlFormBitTbx.value = ''
+  ctrlFormNameTbx.value = ''
+  ctrlFormGroupTbx.value = ''
+  ctrlFormOverrideColorTbx.value = ''
+  if(ctrlLineLB.selectedElem) ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
   ctrlLineLB.selectedUid = null
   
   // REMOVE ALL REF FROM ALL OPCODE STATES?
   
-  ctrlLineLB.selectedUid = null
   ctrlLineLB.refresh()
 }
 
 ctrlLineLB.deselectCtrl = () => {
-  ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
+  if(ctrlLineLB.selectedElem) ctrlLineLB.selectedElem.classList.remove('selected-ctrlline')
   ctrlLineLB.selectedUid = null
   ctrlFormBitTbx.value = ''
   ctrlFormNameTbx.value = ''
