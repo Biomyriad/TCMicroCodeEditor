@@ -36,10 +36,21 @@ function resolveOpCode(opCode, stats) {
       let byteHldr = new Array(stats.numBytes).fill(0)
       
       for (let stateIdx = 0; stateIdx < curStateArr.length; stateIdx++) {
-        let bitPos = ctrlLines.containsCode(curStateArr[stateIdx]).bit
-        let byteIdx = stats.byteIdx(bitPos) // <- if it is larger then max bytes per file (8) then separate 
-        byteHldr[byteIdx] = byteHldr[byteIdx] | 2**stats.bitIdx(bitPos) // maybe [file#,byte#]? file = ÷ byteIdx by (8)ish?
-        //if(opCode.code == '07') console.log(byteIdx + ' - ' + bitPos + ' - ' + stats.bitIdx(bitPos) + ' - ' + 2**stats.bitIdx(bitPos))
+        let ctrlLineHldr = ctrlLines.containsCode(curStateArr[stateIdx])
+        let bitPos = ctrlLineHldr.bit
+        
+        if(bitPos == 'M') {
+          for(i in ctrlLineHldr.macroData) {
+            bitPos = ctrlLines.containsCode(ctrlLineHldr.macroData[i]).bit
+            let byteIdx = stats.byteIdx(bitPos)
+            byteHldr[byteIdx] = byteHldr[byteIdx] | 2 ** stats.bitIdx(bitPos)
+          }
+        } else {
+          let byteIdx = stats.byteIdx(bitPos) // <- if it is larger then max bytes per file (8) then separate 
+          byteHldr[byteIdx] = byteHldr[byteIdx] | 2**stats.bitIdx(bitPos) // maybe [file#,byte#]? file = ÷ byteIdx by (8)ish?
+          //if(opCode.code == '07') console.log(byteIdx + ' - ' + bitPos + ' - ' + stats.bitIdx(bitPos) + ' - ' + 2**stats.bitIdx(bitPos))
+        }
+        
       }
       result = result.concat(byteHldr)
       console.log(byteHldr)
