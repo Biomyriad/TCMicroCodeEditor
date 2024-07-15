@@ -72,29 +72,34 @@ function loadState() {
 }
 
 //-------------- Ctrl Line List Functions ---------
-function ctrlLineEntry(bit,name,group,overrideColor=false) {
+function ctrlLineEntry(bit,name,group,macroData=[],overrideColor=false) {
+ //if(macroData.length == 0) macroData = false
   this.uid = ctrlLines.nextUID
   this.bit = bit // 0
   this.name = name//'IP_TO_ADDY'
   this.group = group//'ALU'
+  this.macroData = macroData
   this.overrideColor = overrideColor// hex color or false
   ctrlLines.nextUID++
 }
 
-ctrlLines.addUpdate = (bit=false,name=false,
-                       group=false, overrideColor=false) => {
+ctrlLines.addUpdate = (uid=false,bit=false,name=false,
+                       group=false,macroData=[],
+                       overrideColor=false) => {
   //let ctrlL = ctrlLines.containsCode(ctrlLineUID)
-  let ctrlL = ctrlLines.containsCodeBit(bit)
+  let ctrlL = ctrlLines.containsCode(uid)
   if(ctrlL) {
     if(bit) ctrlL.bit = bit
     if(name) ctrlL.name = name
     if(group) ctrlL.group = group
     if(overrideColor) ctrlL.overrideColor = overrideColor
+    if(macroData) ctrlL.macroData = macroData
   } else {
     ctrlLines.clList.push(new ctrlLineEntry(
       bit,
       name,
       group,
+      macroData,
       overrideColor
     ))    
   }
@@ -114,6 +119,7 @@ ctrlLines.remove = (ctrlLineUID) => {
 
 // returns modifiable instance of if found
 ctrlLines.containsCode = (ctrlLineUID) => {
+  if(isNaN(ctrlLineUID)) return false
   for(x in ctrlLines.clList) {
     if(ctrlLines.clList[x].uid == ctrlLineUID) return ctrlLines.clList[x]
   }

@@ -10,6 +10,7 @@
   <script src="ctrlLineListbox.js" defer></script>
   <script src="mStateListbox.js" defer></script>
   <script src="ctrlLineStateListbox.js" defer></script>
+  <script src="macroListbox.js" defer></script>
   <script src="saveLoadFileData.js" defer></script>
   <script src="export.js"></script>
   <!-- started 6-22-24 -->
@@ -64,20 +65,29 @@
   <div id="popup">
     <div class="scroll-box" id="ctrllines-available"></div>
     <div class="" id="ctrllines-controls">
+      <div id="actionCtrls">
+        <div>
+          <button onclick="ctrlLineStateLB.removeCtrlFromOpState()"> <= </button>
+          <button onclick="ctrlLineStateLB.addCtrlToOpState()"> => </button>
+        </div>
+        <button id="ctrlform-desel" onclick="ctrlLineLB.deselectCtrl()">deSel</button>
+      </div>
       <div id="ctrlform">
+        <button style="width:54px; height: 20px; margin: 0 auto;" id="ctrlform-edit" onclick="ctrlLineLB.editCtrl()">edit</button>
+        <input type="hidden" id="ctrlform-uid">
         <input type="text" id="ctrlform-bit" placeholder="Bit">
         <input type="text" id="ctrlform-name" placeholder="Name">
         <input type="text" id="ctrlform-group" placeholder="Group">
         <input type="text" id="ctrlform-overridecolor" placeholder="color">
-        <div style="display: flex; justify-content: center; gap: 5px;">
-          <button onclick="ctrlLineLB.saveEntry()">Save</button>
-          <button onclick="ctrlLineLB.deleteEntry()">Delete</button>
+        <div id="macro-buttons">
+          <button id="ctrlform-macroadd" onclick="macroLB.removeCtrlFromMacro()" disabled><=</button>
+          <button id="ctrlform-macroremove" onclick="macroLB.addCtrlToMacro()" disabled>=></button>
         </div>
-      </div>
-      <div id="actionCtrls">
-        <button onclick="ctrlLineStateLB.addCtrlToOpState()">=></button>
-        <button onclick="ctrlLineStateLB.removeCtrlFromOpState()"><=</button>
-        <button onclick="ctrlLineLB.deselectCtrl()">deSel</button>
+        <div class="scroll-box" id="macro"></div>
+        <div id="ctrlform-buttons">
+          <button id="ctrlform-save" onclick="ctrlLineLB.saveEntry()" disabled>Save</button>
+          <button id="ctrlform-delete" onclick="ctrlLineLB.deleteEntry()" disabled>Delete</button>
+        </div>
       </div>
     </div>
     <div class="scroll-box" id="ctrllines-selected"></div>
@@ -133,6 +143,8 @@
       //localStorage.clear()
       embLoad()
     }
+    
+    function z(gy) {}
     
   </script>
 

@@ -13,6 +13,15 @@ button {
   height: 25px;
 }
 
+button:disabled,
+button[disabled] {
+  color: #6b6b6b;
+  background-color: transparent;
+  border: 2px solid #6b6b6b;
+  text-decoration:line-through;
+  
+}
+
 input {
   color: #acacac;
   background-color: #3b3b3b;
@@ -39,6 +48,15 @@ textarea {
 
 .selected-ctrlline {
   background-color: yellow
+}
+
+.selected-ctrledit {
+  background-color: purple;
+  border: 1px dashed red;
+}
+
+.selected-macroctrll {
+  background-color: magenta;
 }
 
 #option-bar {
@@ -132,15 +150,60 @@ textarea {
   flex-direction: column;
   justify-content: center;
   gap: 3px;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
+}
+
+#ctrlform-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+#ctrlform-buttons button {
+  height: 20px;
 }
 
 #actionCtrls {
-  width: 50px;
+  width: 115px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  align-items: center;
+  gap: 5px;
   margin: 0 auto;
-  margin-bottom: 10px;
+  margin-top: 8px;
+  margin-bottom: 30px;
+}
+
+#actionCtrls div {
+  width: 115px;
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+}
+
+#actionCtrls button {
+  width: 55px;
+}
+
+#actionCtrls div button {
+  width: 45px;
+}
+
+#macro {
+  height: 137px;
+  margin-bottom: 0px;
+}
+
+#macro-buttons {
+  width: 118px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  gap: 13px;
+}
+
+#macro-buttons button {
+  width: 45px;
+  height: 20px;
 }
