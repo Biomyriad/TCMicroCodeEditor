@@ -3,8 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MicroCode Editor</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="cloudDb.js"></script>
   <script src="main.js"></script>
   <script src="opCodeListbox.js" defer></script>
   <script src="ctrlLineListbox.js" defer></script>
@@ -13,7 +15,6 @@
   <script src="macroListbox.js" defer></script>
   <script src="saveLoadFileData.js" defer></script>
   <script src="export.js"></script>
-  <script src="cloudDb.js"></script>
   <!-- started 6-22-24 -->
   <style>
     
@@ -23,14 +24,21 @@
 </head>
 <body onload="initApp()">
   <div id="option-bar">
+    <div id="option-bar-inner">
     <div>
-      <label>State:</label>
-      <button onclick="saveStateToFile()">Save</button>
-      <button onclick="loadStateFromFile()">Load</button>
+      <div>
+        <label>State:</label>
+        <button onclick="saveStateToFile()">Save</button>
+        <button onclick="loadStateFromFile()">Load</button>
+      </div>
+      <div>
+        <label>Export to bin:</label>
+        <button>Save</button>
+      </div>
     </div>
     <div>
-      <label>Export to bin:</label>
-      <button>Save</button>
+      xxxx
+    </div>
     </div>
   </div>
   
@@ -54,7 +62,7 @@
       </div>    
     </div>
     
-    <div>
+    <div style="flex-grow: 1;">
       <div class="scroll-box" id="opcode-statelist"></div>
       <div style="display: flex; justify-content: center; gap: 5px;">
         <button onclick="mStateLB.addState()">Add</button>
@@ -140,12 +148,19 @@
       txtOut.innerHTML  = txtHldr
     }
     
-    function TEST2() {
+    async function TEST2() {
       //localStorage.clear()
-      embLoad()
+      //embLoad()
+
+      //let data = await cloudDb.getAll()
+      //data.forEach(async (item) => {
+      //let x = await cloudDb.delete(item.id)
+      //  console.log(x)
+      //})
+      alert()
     }
     
-    function z(gy) {}
+    
     
   </script>
 

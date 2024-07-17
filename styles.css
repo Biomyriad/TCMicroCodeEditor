@@ -68,9 +68,15 @@ textarea {
   border-top: none;
 }
 
+#option-bar-inner {
+  display: flex;
+  gap: 50px;
+  
+}
+
 #content {
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   gap: 10px;
   margin-bottom: 15px;
 }
@@ -120,7 +126,7 @@ textarea {
 
 #popup {
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   gap: 10px;
   margin-bottom: 15px;
 }
@@ -207,3 +213,4 @@ textarea {
   width: 45px;
   height: 20px;
 }
+
