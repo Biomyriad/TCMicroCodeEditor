@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MicroCode Editor</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="cloudDb.js"></script>
-  <script src="main.js"></script>
+  <script src="cloudDb.js" defer></script>
+  <script src="main.js" defer></script>
+  <script src="cloudListbox.js" defer></script>
   <script src="opCodeListbox.js" defer></script>
   <script src="ctrlLineListbox.js" defer></script>
   <script src="mStateListbox.js" defer></script>
@@ -25,20 +26,32 @@
 <body onload="initApp()">
   <div id="option-bar">
     <div id="option-bar-inner">
-    <div>
       <div>
-        <label>State:</label>
-        <button onclick="saveStateToFile()">Save</button>
-        <button onclick="loadStateFromFile()">Load</button>
-      </div>
-      <div>
-        <label>Export to bin:</label>
-        <button>Save</button>
+        <button id="option-bar-menu-btn" onclick="popupToggle()">●●●</button>
       </div>
     </div>
-    <div>
-      xxxx
-    </div>
+  </div>
+  
+  <div id="popup-wnd">
+    <div id="popup-wnd-inner">
+      <div>
+        <div>
+          <label>File:</label>
+          <button onclick="saveStateToFile()">Save</button>
+          <button onclick="loadStateFromFile()">Load</button>
+        </div>
+        <div>
+          <label>Export to bin:</label>
+          <button>Save</button>
+        </div>
+      </div>
+      <div>
+        <div class="scroll-box" id="cloud-listbox"></div>
+        <div id="cloud-form">
+          <input id="cloud-form-nametbx" type="text" style="width:80px">
+          <button onclick="cloudLB.newBtnClick()">New</button>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -117,6 +130,19 @@
       loadState()
       opCodeLB.refresh()
       ctrlLineLB.refresh()
+      
+      cloudLB.refresh() // for testing
+    }
+    
+    function popupToggle() {
+      let popupWnd = document.getElementById("popup-wnd")
+      if(popupWnd.style.display == 'none') {
+        popupWnd.style.display = 'block'
+        cloudLB.refresh()
+      } else {
+        popupWnd.style.display = 'none'
+      }
+      //cloudLB.refresh()
     }
     
 //---------- TEST FUNCTIONS ---------

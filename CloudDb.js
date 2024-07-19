@@ -80,7 +80,7 @@ cloudDb.new = async (recObj) => {
   return data
 }
 
-cloudDb.update = async (recObj,recId) => {
+cloudDb.update = async (recId,recObj) => {
   //var reqData = {
   //  records: [
   //    {
