@@ -170,32 +170,47 @@ textarea {
 }
 
 #opcode-statelist {
+  display:flex;
+  overflow-y: hodden;
+  overflow-x: scroll;
   height: 400px;
-  min-width: 600px;
+  width: 650px;
 }
 
 .mstate-container {
+  display: block;
+  flex-direction: column;
   border: 3px solid #686868;
   background: #1b1b1b;
-  height: 45px;
+  min-height: 387px;
+  height: max-content;
+  min-width: max-content;
   padding: 4px;
-  overflow-wrap: anywhere;
-  margin-bottom: 5px;
 }
 
 .mstate-container:nth-child(even) {
   /* border: 3px solid #757575; */
 }
 
+.mStateCtrlHeaderLabel {
+ display: flex;
+ justify-content: center;
+ min-width: 50px;
+ font-weight: bold;
+ border-bottom: 1px dashed #686868;
+}
+
 .mStateCtrlLabelSpan {
+  display: block;
   padding-right: 4px;
   padding-left: 4px;
+  max-height: 999px;
 }
 
 .mStateCtrlLabelSpan:nth-child(even) {
-  background-color: #303030;
+  /*background-color: #303030;
   border-left: 1px solid blue;
-  border-right: 1px solid blue;
+  border-right: 1px solid blue; */
 }
 
 #popup {

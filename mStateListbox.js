@@ -32,6 +32,11 @@ mStateLB.createEntryEle = (idx,arr) => {
   ele.id = 'mstatelistidx-' + idx
   ele.className ="mstate-container"
   
+  let ctrlHeader = document.createElement("span")
+  ctrlHeader.className = 'mStateCtrlHeaderLabel'
+  ctrlHeader.innerText = idx
+  ele.appendChild(ctrlHeader)
+  
   for(i in arr) {
     let ctrlSpan = document.createElement("span")
     ctrlSpan.className = 'mStateCtrlLabelSpan'
