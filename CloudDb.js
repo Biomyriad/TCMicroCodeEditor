@@ -3,7 +3,11 @@ var cloudDb = {}
 
 cloudDb.base_host = "https://api.airtable.com/v0"
 cloudDb.base_id = "appU9Tu1u6TzVrKnP"
-cloudDb.token = "path0swCIFnGeAcBp.58a8ab3456e0b7124f14dcb6bb13a3a9d44275027b1eb3f2c7d8b47e98107591"
+cloudDb.tokenB64 = "cGF0aDBzd0NJRm5HZUFjQnAuNThhOGFiMzQ1NmUwYjcxMjRmMTRkY2I2YmIxM2EzYTlkNDQyNzUwMjdiMWViM2YyYzdkOGI0N2U5ODEwNzU5MQ=="
+
+cloudDb.token = () => {
+  return atob(cloudDb.tokenB64)
+}
 
 cloudDb.newRecObj = (keyValObj) => {
   var recObj = {fields: {}}
@@ -24,7 +28,7 @@ cloudDb.getAll = async (offsetId='') => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${cloudDb.token}`
+        'Authorization': `Bearer ${cloudDb.token()}`
       }
     });
     let data = await response.json();
@@ -50,7 +54,7 @@ cloudDb.getOne = async (recId) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cloudDb.token}`
+      'Authorization': `Bearer ${cloudDb.token()}`
     }
   });
   let data = await response.json();
@@ -72,7 +76,7 @@ cloudDb.new = async (recObj) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cloudDb.token}`
+      'Authorization': `Bearer ${cloudDb.token()}`
     },
     body: JSON.stringify(recObj)
   });
@@ -95,7 +99,7 @@ cloudDb.update = async (recId,recObj) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cloudDb.token}`
+      'Authorization': `Bearer ${cloudDb.token()}`
     },
     body: JSON.stringify(recObj)
   });
@@ -108,7 +112,7 @@ cloudDb.delete = async (recId) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cloudDb.token}`
+      'Authorization': `Bearer ${cloudDb.token()}`
     }
   });
   let data = await response.json();
