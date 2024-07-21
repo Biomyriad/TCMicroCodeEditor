@@ -1,6 +1,5 @@
 var cloudDb = {}
 
-
 cloudDb.base_host = "https://api.airtable.com/v0"
 cloudDb.base_id = "appU9Tu1u6TzVrKnP"
 cloudDb.tokenB64 = "cGF0aDBzd0NJRm5HZUFjQnAuNThhOGFiMzQ1NmUwYjcxMjRmMTRkY2I2YmIxM2EzYTlkNDQyNzUwMjdiMWViM2YyYzdkOGI0N2U5ODEwNzU5MQ=="
