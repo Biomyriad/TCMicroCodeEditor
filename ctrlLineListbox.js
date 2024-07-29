@@ -20,9 +20,12 @@ var ctrlFormMacroRemoveBtn = document.getElementById('ctrlform-macroremove')
 ctrlLineLB.saveEntry = () => {
   if(ctrlFormBitTbx.value == '' || ctrlFormNameTbx.value == '') return
   if(ctrlFormBitTbx.value != 'M') {
-    if(ctrlLines.containsCodeBit(ctrlFormBitTbx.value)) {
-      alert('Dup bit number')
-      return
+    let ctrlItem = ctrlLines.containsCodeBit(ctrlFormBitTbx.value)
+    if(ctrlLineLB.editingUid != ctrlItem.uid) {
+      if(ctrlItem) {
+        alert('Dup bit number')
+        return
+      }
     }
   }
   if(ctrlFormUidTbx.value == '') ctrlFormUidTbx.value = false
@@ -106,7 +109,7 @@ ctrlLineLB.setFormBtnsEnabled = (setEnabled) => {
   }
 }
 
-ctrlLineLB.createEntryEle = (bit,name,group,uid,overridecolor=false) => {
+ctrlLineLB.createEntryEle = (bit,name,group,uid,overrideColor=false) => {
   let ele = document.createElement("div")
   let tx1 = document.createElement("span")
   let tx2 = document.createElement("span")
@@ -116,6 +119,8 @@ ctrlLineLB.createEntryEle = (bit,name,group,uid,overridecolor=false) => {
 
   ele.addEventListener("click", ctrlLineLB.entryClickHandler);
   ele.id = "ctrlline-" + uid
+  if(overrideColor !='') ele.style.color = overrideColor
+  if(bit == 'M') ele.style.fontWeight = 'bold'
   tx1.innerText = bit
   tx2.innerText = ' - '
   tx3.innerText = name
@@ -160,7 +165,8 @@ ctrlLineLB.refresh = () => {
           item.bit,
           item.name,
           item.group,
-          item.uid
+          item.uid,
+          item.overrideColor
         )
       )
     })

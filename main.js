@@ -88,11 +88,13 @@ ctrlLines.addUpdate = (uid=false,bit=false,name=false,
                        overrideColor=false) => {
   //let ctrlL = ctrlLines.containsCode(ctrlLineUID)
   let ctrlL = ctrlLines.containsCode(uid)
+  if(bit == 'm') bit = 'M'
   if(ctrlL) {
     if(bit) ctrlL.bit = bit
     if(name) ctrlL.name = name
     if(group) ctrlL.group = group
     if(overrideColor) ctrlL.overrideColor = overrideColor
+    if(overrideColor == '') ctrlL.overrideColor = overrideColor
     if(macroData) ctrlL.macroData = macroData
   } else {
     ctrlLines.clList.push(new ctrlLineEntry(

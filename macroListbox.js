@@ -61,12 +61,13 @@ macroLB.createEntryEle = (ctrlLineUid) => {
   //let tx4 = document.createElement("span")
   //let tx5 = document.createElement("span")
   
-
+  let ctrlItem = ctrlLines.containsCode(ctrlLineUid)
   ele.addEventListener("click", macroLB.entryClickHandler);
   ele.id = "ctrlmacroselectedUid-" + ctrlLineUid
+  if(ctrlItem.overrideColor !='') ele.style.color = ctrlItem.overrideColor
   //tx1.innerText = bit
   //tx2.innerText = ' - '
-  tx3.innerText = ctrlLines.containsCode(ctrlLineUid).name//name
+  tx3.innerText = ctrlItem.name
   //tx4.innerText = ' - '
   //tx5.innerText = group
   //ele.appendChild(tx1)

@@ -30,7 +30,7 @@ mStateLB.createEntryEle = (idx,arr) => {
 
   ele.addEventListener("click", mStateLB.entryClickHandler);
   ele.id = 'mstatelistidx-' + idx
-  ele.className ="mstate-container"
+  ele.className = "mstate-container"
   
   let ctrlHeader = document.createElement("span")
   ctrlHeader.className = 'mStateCtrlHeaderLabel'
@@ -38,9 +38,13 @@ mStateLB.createEntryEle = (idx,arr) => {
   ele.appendChild(ctrlHeader)
   
   for(i in arr) {
+    let ctrlItem = ctrlLines.containsCode(arr[i])
     let ctrlSpan = document.createElement("span")
     ctrlSpan.className = 'mStateCtrlLabelSpan'
-    ctrlSpan.innerText = ctrlLines.containsCode(arr[i]).name
+    ctrlSpan.innerText = ctrlItem.name
+    if(ctrlItem.bit == 'M') ctrlSpan.style.fontWeight = 'bold'
+    if(ctrlItem.overrideColor) ctrlSpan.style.color = ctrlItem.overrideColor
+    
     ele.appendChild(ctrlSpan)
   }
 
