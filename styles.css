@@ -35,11 +35,11 @@ textarea {
 }
 
 .selected-opcode {
-  background-color: red;
+  background-color: #9B0000;
 }
 
 .selected-mstate {
-  background-color: blue !important;
+  background-color: #010155 !important;
 }
 
 .selected-statectrlline {
@@ -47,7 +47,7 @@ textarea {
 }
 
 .selected-ctrlline {
-  background-color: yellow
+  background-color: #8C8B00
 }
 
 .selected-ctrledit {
@@ -56,7 +56,7 @@ textarea {
 }
 
 .selected-macroctrll {
-  background-color: magenta;
+  background-color: #800080;
 }
 
 #option-bar {
