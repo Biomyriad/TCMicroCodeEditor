@@ -19,8 +19,9 @@ var ctrlFormMacroRemoveBtn = document.getElementById('ctrlform-macroremove')
 
 ctrlLineLB.saveEntry = () => {
   if(ctrlFormBitTbx.value == '' || ctrlFormNameTbx.value == '') return
+    let ctrlItem = false
   if(ctrlFormBitTbx.value != 'M') {
-    let ctrlItem = ctrlLines.containsCodeBit(ctrlFormBitTbx.value)
+    ctrlItem = ctrlLines.containsCodeBit(ctrlFormBitTbx.value)
     if(ctrlLineLB.editingUid != ctrlItem.uid) {
       if(ctrlItem) {
         alert('Dup bit number')
@@ -38,6 +39,7 @@ ctrlLineLB.saveEntry = () => {
     macroLB.data,
     ctrlFormOverrideColorTbx.value
   )
+  if(ctrlItem) mStateLB.refresh()
   ctrlLineLB.deselectCtrl()
   ctrlLineLB.refresh()
   ctrlLineLB.setFormBtnsEnabled(false)
