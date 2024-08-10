@@ -169,8 +169,8 @@
       let txtOut = document.getElementById('exportText')
       let txtHldr = ''
       for(let i=0;i<newOut.length;i++) {
-        //txtHldr = txtHldr + ('<U64>' + newOut[i] + ' ')
-        txtHldr = txtHldr + newOut[i] + ' '
+        txtHldr = txtHldr + ('<U64>' + newOut[i] + ' ')
+        //txtHldr = txtHldr + newOut[i] + ' '
         if((i+1) % 2 == 0 ) txtHldr = txtHldr + '\n'
       }
       txtOut.innerHTML  = txtHldr
